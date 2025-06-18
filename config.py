@@ -1,10 +1,7 @@
 
 
-nest_num = 2
-WRFOUT_FOLDERNAME = '2022_8_9_hokkaido'
 
-# rain wind 2m_temp
-element = 'rain'
+WRFOUT_FOLDERNAME = '2018_10_23_24_cambodia'
 
 SAVE_IMAGE_PATH = f'./images'
 WRFOUT_FOLDER = f'./wrfout'

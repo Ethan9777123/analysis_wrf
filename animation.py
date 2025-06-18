@@ -2,44 +2,45 @@ from glob import glob
 import os
 from PIL import Image
 import config
+from utils2 import get_imagepaths, get_nest_num, get_foldername, choice_folders
 
-def animation(foldername, nestnum=1, target='d0',  folderpath='./images'):
+SAVE_IMAGE_PATH = config.SAVE_IMAGE_PATH
 
-    target = target + str(nestnum) + '*'
+def animation(target_images, filename):
 
-    filepath = os.path.join(folderpath, foldername, target)
+    
 
-    target_imgs = glob(filepath)
+    target_imgs = get_imagepaths
 
     print(target_imgs)
 
     frames = []
 
-    for img_path in target_imgs:
+    for img_path in target_images:
         img = Image.open(img_path)
         frames.append(img)
 
     frames[0].save(
-        f'{foldername}_{nestnum}.gif',
+        f'./gif/{filename}.gif',
         save_all=True,
         append_images=frames[1:],
         duration=200,  # ミリ秒 (500ms = 0.5秒)
         loop=0
     )
 
-nestnum = config.nest_num
+# get folders
+folderpath_list = choice_folders(get_foldername(path=config.SAVE_IMAGE_PATH))
 
-WRF_OUT_FOLDERNAME = config.WRF_OUT_FOLDERNAME
-element = config.element
-IMAGE_FOLDERNAME = WRF_OUT_FOLDERNAME + '_' + element
-SAVE_IMAGE_PATH = f'./wrf_images/{IMAGE_FOLDERNAME}'
+# main
+for folder in folderpath_list:
+    nest_num_list = get_nest_num(folder)
+    
+    for nest_num in nest_num_list:
+        
+        folder_name = os.path.basename(folder)
+        filename = f'{folder_name}_{nest_num}'
+        images = get_imagepaths(folderpath=folder, nestnum=nest_num)
 
-if element == 'rain':
-    target = f'rain_d0'
-elif element == 'wind':
-    target = f'wind_d0'
-elif element == '2m_temp':
-    target = f't2_d0'
+        animation(target_images=images, filename=filename)
+        
 
-
-animation(IMAGE_FOLDERNAME, target=target, nestnum=nestnum)

@@ -5,7 +5,7 @@ import numpy as np
 import cartopy.crs as ccrs
 from glob import glob
 import xarray as xr
-from utils import get_filepath, save_as_png
+from utils2 import get_filepath, save_as_png
 import cartopy.feature as cfeature
 from pandas import to_datetime
 import config

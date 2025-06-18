@@ -5,7 +5,7 @@ import numpy as np
 import cartopy.crs as ccrs
 from glob import glob
 import xarray as xr
-from utils import get_filepath, save_as_png
+from utils2 import get_filepath, save_as_png
 import cartopy.feature as cfeature
 from pandas import to_datetime
 import matplotlib.colors as mcolors
@@ -14,9 +14,6 @@ import config
 
 def rain_houry(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
 
-    
-
-    
 
     bounds = [0, 1, 5, 10, 20, 30, 50, 80, 100]
     colors = ['white', 'lightblue', 'blue', 'lime', 'yellow', 'orange', 'red', 'purple']
