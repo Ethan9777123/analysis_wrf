@@ -6,3 +6,6 @@ Pillow
 matplotlib
 xarray
 scipy
+xesmf
+paramiko
+python-dotenv

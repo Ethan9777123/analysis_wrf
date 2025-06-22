@@ -4,9 +4,13 @@ from questionary import Choice
 from pathlib import Path
 import re
 from netCDF4 import Dataset
-from wrf import getvar, latlon_coords, to_np, ALL_TIMES
+from wrf import getvar
 from glob import glob
 from pandas import to_datetime
+from datetime import timedelta
+import paramiko
+from dotenv import load_dotenv
+from datetime import datetime
 
 def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
 
@@ -19,17 +23,25 @@ def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
                 new_path = os.path.join(WRFOUT_FOLDERPATH, new_filename)
                 os.rename(old_path, new_path)
 
-def get_filepath(WRFOUT_FOLDERPATH):
+def get_filepath(folderpath):
     
-    refine_filename(WRFOUT_FOLDERPATH)
+    refine_filename(folderpath)
 
     filepaths = []
 
-    for filename in os.listdir(WRFOUT_FOLDERPATH):
-        filepath = WRFOUT_FOLDERPATH + '/' + filename
+    for filename in os.listdir(folderpath):
+        filepath = folderpath + '/' + filename
         filepaths.append(filepath)
     
-    return filepaths
+    return filepaths.sort()
+
+def get_wrfoutfiles(wrfout_folderpath, nest_num=1):
+
+    refine_filename(WRFOUT_FOLDERPATH=wrfout_folderpath)
+    
+    filelist = sorted(glob(f'{wrfout_folderpath}/wrfout_d0{nest_num}_*'))
+
+    return filelist
 
 def save_as_png(plt, filename, SAVE_IMAGE_PATH):
 
@@ -151,5 +163,52 @@ def make_rain_houry(WRFOUT_FOLDERPATH, nest_num=1):
     return rain_houry
 
       
-    
-    
+def split_by_n(s, n=2):
+    return [s[i:i+n] for i in range(0, len(s), n)]
+
+def generate_hourly_timestamps(start, end):
+
+    dt_list = []
+    current = start
+    while current <= end:
+        dt_list.append(current.strftime("%Y%m%d%H"))  # 文字列で格納
+        current += timedelta(hours=1)
+
+    return dt_list
+
+def download_gsmap(timestamp):
+
+    # read .env
+    load_dotenv()
+
+    # conf
+    host = 'ftp.gportal.jaxa.jp'
+    port = 2051
+
+    username = os.getenv("G_PORTAL_USERNAME")
+    password = os.getenv("G_PORTAL_PASSWORD")
+
+    dt = datetime.strptime(timestamp, "%Y%m%d%H")
+    yy = dt.strftime("%y")  # "22"
+    mm = dt.strftime("%m")  # "06"
+    dd = dt.strftime("%d")  # "05"
+    hh = dt.strftime("%H")  # "00"
+
+    # dir
+    filename = f'GPMMRG_MAP_{yy}{mm}{dd}{hh}00_H_L3S_MCN_05A.nc'
+    path = f'/standard/GSMaP/3.GSMAP.H/05A/20{yy}/{mm}/{dd}/{filename}'
+    current_dir = os.getcwd()
+    store_path = os.path.join(current_dir,'data', 'gsmap', f'20{yy}', f'{mm}', f'{dd}', f'{filename}')
+
+    # ✅ 保存先ディレクトリが無ければ作成
+    os.makedirs(os.path.dirname(store_path), exist_ok=True)
+
+    # SFTP接続
+    transport = paramiko.Transport((host, port))
+    transport.connect(username=username, password=password)
+
+    sftp = paramiko.SFTPClient.from_transport(transport)
+    sftp.get(path, store_path)  # ダウンロード
+    sftp.close()
+
+    print("✅ ダウンロード完了:", filename)

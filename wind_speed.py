@@ -1,15 +1,12 @@
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
-from wrf import getvar, latlon_coords, to_np, ALL_TIMES
+from wrf import getvar, latlon_coords, to_np
 import numpy as np
 import cartopy.crs as ccrs
-from glob import glob
-import xarray as xr
-from utils2 import get_filepath, save_as_png
+from utils.tools import save_as_png, get_wrfoutfiles
 import cartopy.feature as cfeature
 from pandas import to_datetime
-import config
-import os
+
 
 def wind_speed(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
 
@@ -26,7 +23,7 @@ def wind_speed(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
 
 
     # get file list
-    filelist = sorted(glob(f'{WRFOUT_FOLDERPATH}/wrfout_d0{nest_num}_*'))
+    filelist = get_wrfoutfiles(wrfout_folderpath=WRFOUT_FOLDERPATH, nest_num=nest_num)
 
 
 

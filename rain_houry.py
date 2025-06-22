@@ -1,47 +1,29 @@
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
-from wrf import getvar, latlon_coords, to_np, ALL_TIMES
+from wrf import getvar, latlon_coords, to_np
 import numpy as np
 import cartopy.crs as ccrs
-from glob import glob
-import xarray as xr
-from utils2 import get_filepath, save_as_png
+from utils.tools import save_as_png, get_wrfoutfiles
 import cartopy.feature as cfeature
 from pandas import to_datetime
-import matplotlib.colors as mcolors
-import os
+
 import config
 
 def rain_houry(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
 
 
-    bounds = [0, 1, 5, 10, 20, 30, 50, 80, 100]
-    colors = ['white', 'lightblue', 'blue', 'lime', 'yellow', 'orange', 'red', 'purple']
-
+   
     # plot setting
-    cmap = mcolors.ListedColormap(colors)
-    norm = mcolors.BoundaryNorm(bounds, cmap.N)
-    levels = [0, 1, 5, 10, 20, 30, 40, 50]
+    cmap = config.cmap
+    norm = config.norm
+    levels = config.levels
 
 
     # np setting
     np.set_printoptions(threshold=np.inf)
 
-
-    # get lats, lons
-    wrf_files = get_filepath(WRFOUT_FOLDERPATH=WRFOUT_FOLDERPATH)
-    wrf_file = Dataset(wrf_files[0])
-    rainc_2 = getvar(wrf_file, "RAINC", timeidx=0)    # convective
-    rainnc_2 = getvar(wrf_file, "RAINNC", timeidx=0)  # non-convective
-    rain_total_2 = rainc_2 + rainnc_2
-    lats, lons = latlon_coords(rain_total_2)
-    lat_2d = to_np(lats)
-    lon_2d = to_np(lons)
-
-
-
     # get file list
-    filelist = sorted(glob(f'{WRFOUT_FOLDERPATH}/wrfout_d0{nest_num}_*'))
+    filelist = get_wrfoutfiles(wrfout_folderpath=WRFOUT_FOLDERPATH, nest_num=nest_num)
 
     # get rain info as list
     rain_total_list = []
