@@ -58,15 +58,22 @@ def rain_houry(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
         plt.figure(figsize=(10, 8))
         ax = plt.axes(projection=ccrs.PlateCarree())
 
-        cf = ax.contourf(
+        mesh = ax.pcolormesh(
             lon_2d, lat_2d, rain_2d,
-            levels=levels,
-            cmap=cmap, norm=norm, extend='max'
+            cmap=cmap,
+            norm=norm,   
+            shading='auto',
+            transform=ccrs.PlateCarree()
         )
+        # cf = ax.contourf(
+        #     lon_2d, lat_2d, rain_2d,
+        #     levels=levels,
+        #     cmap=cmap, norm=norm, extend='max'
+        # )
         ax.coastlines()
         ax.add_feature(cfeature.BORDERS)
         ax.set_title(f"{time_list[i]} - {time_list[i+1]}")
-        plt.colorbar(cf, ax=ax, label="mm/hr", orientation="vertical", shrink=0.7)
+        plt.colorbar(mesh, ax=ax, label="mm/hr", orientation="vertical", shrink=0.7)
 
         filename = f'rain_d0{nest_num}_{time_list[i]}_{time_list[i+1]}.png'
 

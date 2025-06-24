@@ -59,7 +59,7 @@ def get_observation(nc_filename, GSMAP_FOLDERNAME, visualize=False, make_png=Fal
         # print(yy, mm, dd, hh)
 
         # カラーバーなど
-        plt.colorbar(mesh, ax=ax, orientation='vertical', label=f'rain houry (mm/hr)')
+        plt.colorbar(mesh, ax=ax, orientation='vertical', label=f'rain houry (mm/hr)', shrink=0.7)
         plt.title(f'rain {title}')
         plt.tight_layout()
 

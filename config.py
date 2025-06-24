@@ -1,20 +1,20 @@
 import matplotlib.colors as mcolors
 
 
-WRFOUT_FOLDERNAME = '2022_7_23_cambodia'
+WRFOUT_FOLDERNAME = '2022_9_14_15_cambodia'
 
-GSMAP_FOLDERNAMAE = '2022_10_6_cambodia'
+GSMAP_FOLDERNAMAE = '2022_9_14_15_cambodia'
 
 SAVE_IMAGE_PATH = f'./data/images'
 SAVE_GIF_PATH = f'./data/gif'
 WRFOUT_FOLDER = f'./data/wrfout'
 
 # lat lon
-cambodia_lat_lon = [102, 108, 10, 15]
+cambodia_lat_lon = [98, 112, 8, 17]
 japan_lat_lon = [122, 154, 24, 46]
 
 
-lat_lon = japan_lat_lon
+lat_lon = cambodia_lat_lon
 
 
 
