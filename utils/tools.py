@@ -57,7 +57,11 @@ def get_nest_num(WRFOUT_FOLDERPATH):
 
     for filename in os.listdir(WRFOUT_FOLDERPATH):
         
-        current_nest_num = int(get_word_after_keyword(filename, keyword='d'))
+        nest_num = get_word_after_keyword(filename, keyword='d')
+        if nest_num:
+            current_nest_num = int(nest_num)
+        else:
+            return None
         if (current_nest_num != nest_num_list[-1]):
             nest_num_list.append(current_nest_num)
 
@@ -91,12 +95,24 @@ def choice_folders(folderlist):
 
 def get_foldername(path='./images'):
 
-    target_dir = Path(path)
+    subfolders = []
+    if isinstance(path, list):
 
-    subfolders = [f for f in target_dir.iterdir() if f.is_dir()]
+        for p in path:
+            target_dir = Path(p)
+            subfolders += [f for f in target_dir.iterdir() if f.is_dir()]
+    else:
+        target_dir = Path(path)
+
+    subfolders += [f for f in target_dir.iterdir() if f.is_dir()]
+
+    # 重複排除（setは順序保持しないので注意）
+    unique_folders = list(dict.fromkeys(subfolders))
+
+    
     
     # sort
-    sorted_subfolders = sorted(subfolders, key=lambda f: f.stat().st_ctime, reverse=True)
+    sorted_subfolders = sorted(unique_folders, key=lambda f: f.stat().st_ctime, reverse=True)
 
     # change to str
     sorted_paths = [str(f) for f in sorted_subfolders]
@@ -110,6 +126,10 @@ def get_imagepaths(folderpath, nestnum):
         filepath = os.path.join(folderpath, filename)
         filepaths.append(filepath)
     
+    if nestnum  == -1:
+        return filepaths
+    
+
     keyword = 'd0' + str(nestnum)
 
     matched_files = [f for f in filepaths if keyword in str(f)]

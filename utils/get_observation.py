@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
-from utils.tools import save_as_png, split_by_n
+from tools import save_as_png, split_by_n
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -14,7 +14,7 @@ import config
 def get_observation(nc_filename, GSMAP_FOLDERNAME, visualize=False, make_png=False):
 
     # nc_filename = 'data/gsmap/2018/08/29/GPMMRG_MAP_2008290700_H_L3S_MCN_04G.nc'
-    print('nc_filename : ', nc_filename)
+    # print('nc_filename : ', nc_filename)
     ds = xr.open_dataset(nc_filename[0], engine="netcdf4")
 
     rain = ds['hourlyPrecipRateGC']  # mm/hr
