@@ -1,7 +1,6 @@
-import paramiko
-from dotenv import load_dotenv
+
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.tools import generate_hourly_timestamps, download_gsmap

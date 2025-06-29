@@ -232,3 +232,17 @@ def download_gsmap(timestamp):
     sftp.close()
 
     print("✅ ダウンロード完了:", filename)
+
+def get_gsmap_file(yy, mm, dd, hh):
+
+    current_dir = os.getcwd()
+    timestamp = f'20{yy}{mm}{dd}{hh}'
+    filename = f'GPMMRG_MAP_{yy}{mm}{dd}{hh}00_H_L3S_MCN_05A.nc'
+
+    store_path = os.path.join(current_dir,'data', 'gsmap', f'20{yy}', f'{mm}', f'{dd}', f'{filename}')
+    if not os.path.exists(store_path):
+        download_gsmap(timestamp)
+
+    file = glob(store_path)
+
+    return file

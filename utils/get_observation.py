@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
-from tools import save_as_png, split_by_n
+from utils.tools import save_as_png, split_by_n
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -11,11 +11,9 @@ import config
 
 
 
-def get_observation(nc_filename, GSMAP_FOLDERNAME, visualize=False, make_png=False):
+def get_observation(nc_filepath, GSMAP_FOLDERNAME, visualize=False, make_png=False):
 
-    # nc_filename = 'data/gsmap/2018/08/29/GPMMRG_MAP_2008290700_H_L3S_MCN_04G.nc'
-    # print('nc_filename : ', nc_filename)
-    ds = xr.open_dataset(nc_filename[0], engine="netcdf4")
+    ds = xr.open_dataset(str(nc_filepath), engine="netcdf4")
 
     rain = ds['hourlyPrecipRateGC']  # mm/hr
     lat = ds['Latitude']
@@ -24,9 +22,6 @@ def get_observation(nc_filename, GSMAP_FOLDERNAME, visualize=False, make_png=Fal
     # plot setting
     cmap = config.cmap
     norm = config.norm
-    levels = config.levels
-
-    
 
     if visualize or make_png:
         # --- プロット設定 ---
@@ -51,7 +46,7 @@ def get_observation(nc_filename, GSMAP_FOLDERNAME, visualize=False, make_png=Fal
         ax.add_feature(cfeature.OCEAN, facecolor='white')
 
         # title and file name
-        filename = os.path.basename(nc_filename[0])
+        filename = os.path.basename(nc_filepath)
         timestamp = filename.split('_')[2]
         yy, mm, dd, hh, mi = split_by_n(timestamp, n=2)
         title = f'20{yy}-{mm}-{dd} {hh}:{mi}'

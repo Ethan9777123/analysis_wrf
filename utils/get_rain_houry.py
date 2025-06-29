@@ -9,8 +9,6 @@ def get_rain_houry(WRFOUT_FOLDERPATH, nest_num):
     # get file list
     filelist = sorted(glob(f'{WRFOUT_FOLDERPATH}/wrfout_d0{nest_num}_*'))
 
-    
-
     # main
     pre_rain_total = None
     pre_time = None

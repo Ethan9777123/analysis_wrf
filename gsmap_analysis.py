@@ -32,6 +32,6 @@ for timestamp in dt_list:
     if not os.path.exists(store_path):
         download_gsmap(timestamp)
 
-    file = glob(store_path)
-    get_observation(nc_filename=file, GSMAP_FOLDERNAME=config.GSMAP_FOLDERNAMAE, visualize=False, make_png=True)
+    file = glob(store_path) # list to str
+    get_observation(nc_filepath=file[0], GSMAP_FOLDERNAME=config.GSMAP_FOLDERNAMAE, visualize=False, make_png=True)
 

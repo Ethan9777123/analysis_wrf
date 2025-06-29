@@ -1,4 +1,4 @@
-from glob import glob
+
 import os
 from PIL import Image
 import config
@@ -14,7 +14,7 @@ def animation(target_images, filename, isgif=False):
 
     # MP4
     with imageio.get_writer(f'{config.SAVE_GIF_PATH}/{filename}.mp4', fps=3) as writer:
-        for img_path in images:
+        for img_path in target_images:
             img = imageio.imread(img_path)
             writer.append_data(img)
 
