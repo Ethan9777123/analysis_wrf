@@ -7,10 +7,10 @@ from netCDF4 import Dataset
 from wrf import getvar
 from glob import glob
 from pandas import to_datetime
-from datetime import timedelta
+from datetime import timedelta, datetime
 import paramiko
 from dotenv import load_dotenv
-from datetime import datetime
+
 
 def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
 
@@ -246,3 +246,11 @@ def get_gsmap_file(yy, mm, dd, hh):
     file = glob(store_path)
 
     return file
+
+def get_latlon_minmax(lat, lon):
+
+    # Get WRF Area
+    lat_min, lat_max = float(lat.min().values), float(lat.max().values)
+    lon_min, lon_max = float(lon.min().values), float(lon.max().values)
+    
+    return lat_min, lat_max, lon_min, lon_max

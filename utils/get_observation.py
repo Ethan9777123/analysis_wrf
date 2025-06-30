@@ -2,7 +2,6 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-
 from utils.tools import save_as_png, split_by_n
 import sys
 import os

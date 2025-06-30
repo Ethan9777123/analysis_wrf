@@ -2,7 +2,7 @@ from netCDF4 import Dataset
 from wrf import getvar
 from glob import glob
 from pandas import to_datetime
-from wrf import getvar, latlon_coords, to_np
+from wrf import getvar, latlon_coords
 
 def get_rain_houry(WRFOUT_FOLDERPATH, nest_num):
 

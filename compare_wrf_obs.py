@@ -5,11 +5,10 @@ from utils.get_rain_houry import get_rain_houry
 from utils.get_observation import get_observation
 from utils.interpolation import interpolation
 from datetime import datetime
-
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import numpy as np
+
 
 WRFOUT_FOLDER = config.WRFOUT_FOLDER
 IMAGE_FOLDERPATH = config.SAVE_IMAGE_PATH
@@ -38,8 +37,8 @@ for nest_num in nest_num_list:
         dt = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
 
         yy = dt.year % 100    # → 22
-        mm = f'{dt.month:02d}'         # → 10
-        dd = f'{dt.day:02d}'           # → 16
+        mm = f'{dt.month:02d}'# → 10
+        dd = f'{dt.day:02d}'  # → 16
         hh = f'{dt.hour:02d}' # → 03
 
         # gsmap

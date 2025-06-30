@@ -1,9 +1,9 @@
 import matplotlib.colors as mcolors
 
 
-WRFOUT_FOLDERNAME = '2020_9_12_13_cambodia'
+WRFOUT_FOLDERNAME = '2020_10_14_16_cambodia_cu_0'
 
-GSMAP_FOLDERNAMAE = '2020_9_12_13_cambodia'
+GSMAP_FOLDERNAMAE = '2020_10_14_16_cambodia_cu_0'
 
 SAVE_IMAGE_PATH = f'./data/images'
 SAVE_GSMAP_IMAGE_PATH = f'./data/gsmap/images'
