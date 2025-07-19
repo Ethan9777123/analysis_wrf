@@ -1,14 +1,20 @@
 import matplotlib.colors as mcolors
+from utils.tools import refine_filename 
 
+WRFOUT_FOLDERNAME = '2022_8_15_18_cambodia_cu_2'
 
-WRFOUT_FOLDERNAME = '2020_10_14_16_cambodia_cu_0'
+GSMAP_FOLDERNAMAE = '2022_8_15_18_cambodia_cu_2'
 
-GSMAP_FOLDERNAMAE = '2020_10_14_16_cambodia_cu_0'
+COMPARE_WRF_IMAGE_FOLDERNAME = 'TEST'
 
 SAVE_IMAGE_PATH = f'./data/images'
 SAVE_GSMAP_IMAGE_PATH = f'./data/gsmap/images'
 SAVE_GIF_PATH = f'./data/gif'
 WRFOUT_FOLDER = f'./data/wrfout'
+
+refine_filename(WRFOUT_FOLDERPATH=WRFOUT_FOLDER + '/' + WRFOUT_FOLDERNAME)
+
+
 
 # lat lon
 cambodia_lat_lon = [98, 112, 8, 17]

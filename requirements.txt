@@ -10,3 +10,4 @@ xesmf
 paramiko
 python-dotenv
 ffmpeg
+scp

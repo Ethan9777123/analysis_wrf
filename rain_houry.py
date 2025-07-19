@@ -1,11 +1,8 @@
 import matplotlib.pyplot as plt
-from netCDF4 import Dataset
-from wrf import getvar, latlon_coords, to_np
 import numpy as np
 import cartopy.crs as ccrs
 from utils.tools import save_as_png, get_wrfoutfiles
 import cartopy.feature as cfeature
-from pandas import to_datetime
 from utils.get_rain_houry import get_rain_houry
 import config
 from datetime import datetime
@@ -63,9 +60,13 @@ def rain_houry(WRFOUT_FOLDERPATH, SAVE_IMAGE_PATH, nest_num=1):
 
         filename = f'wrf_d0{nest_num}_20{yy}{mm}{dd}{hh}.png'
 
-        print(filename)
+        # print('lon', lon)
+        # print('lat', lat)
+        # print('rain', time_rain_wrf[i][1])
 
+        
         # save as png
+        print(filename)
         save_as_png(plt, filename, SAVE_IMAGE_PATH=SAVE_IMAGE_PATH)
 
 

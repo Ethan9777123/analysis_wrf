@@ -10,6 +10,7 @@ from pandas import to_datetime
 from datetime import timedelta, datetime
 import paramiko
 from dotenv import load_dotenv
+import numpy as np
 
 
 def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
@@ -52,7 +53,7 @@ def save_as_png(plt, filename, SAVE_IMAGE_PATH):
 
 def get_nest_num(WRFOUT_FOLDERPATH):
 
-    print(WRFOUT_FOLDERPATH)
+    print('get : ', WRFOUT_FOLDERPATH)
     nest_num_list = [1]
 
     for filename in os.listdir(WRFOUT_FOLDERPATH):
@@ -61,7 +62,7 @@ def get_nest_num(WRFOUT_FOLDERPATH):
         if nest_num:
             current_nest_num = int(nest_num)
         else:
-            return None
+            continue
         if (current_nest_num != nest_num_list[-1]):
             nest_num_list.append(current_nest_num)
 
@@ -249,8 +250,40 @@ def get_gsmap_file(yy, mm, dd, hh):
 
 def get_latlon_minmax(lat, lon):
 
-    # Get WRF Area
-    lat_min, lat_max = float(lat.min().values), float(lat.max().values)
-    lon_min, lon_max = float(lon.min().values), float(lon.max().values)
-    
+    # lat/lonがxarrayかどうかチェックしてmin/maxの値を取得
+    if hasattr(lat, 'values'):
+        lat_min = float(lat.min().values)
+        lat_max = float(lat.max().values)
+    else:
+        lat_min = float(lat.min())
+        lat_max = float(lat.max())
+
+    if hasattr(lon, 'values'):
+        lon_min = float(lon.min().values)
+        lon_max = float(lon.max().values)
+    else:
+        lon_min = float(lon.min())
+        lon_max = float(lon.max())
+
     return lat_min, lat_max, lon_min, lon_max
+
+def calc_bounds(arr):
+    """格子の境界を計算 (arr: 2次元配列)"""
+    avg_rows = (arr[:-1, :] + arr[1:, :]) / 2
+    avg_cols = (arr[:, :-1] + arr[:, 1:]) / 2
+    center = (arr[:-1, :-1] + arr[1:, 1:]) / 2
+
+    bounds = np.empty((arr.shape[0]+1, arr.shape[1]+1))
+    bounds[1:-1, 1:-1] = center
+    bounds[0, 1:-1] = avg_cols[0, :]
+    bounds[-1, 1:-1] = avg_cols[-1, :]
+    bounds[1:-1, 0] = avg_rows[:, 0]
+    bounds[1:-1, -1] = avg_rows[:, -1]
+
+    # 四隅は平均で埋める
+    bounds[0, 0] = arr[0, 0]
+    bounds[0, -1] = arr[0, -1]
+    bounds[-1, 0] = arr[-1, 0]
+    bounds[-1, -1] = arr[-1, -1]
+    
+    return bounds
