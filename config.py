@@ -5,7 +5,12 @@ WRFOUT_FOLDERNAME = '2022_8_15_18_cambodia_cu_2'
 
 GSMAP_FOLDERNAMAE = '2022_8_15_18_cambodia_cu_2'
 
-COMPARE_WRF_IMAGE_FOLDERNAME = 'TEST'
+COMPARE_WRF_IMAGE_FOLDERNAME = 'test_2'
+
+CAMBODIA_MAP_PATH = './data/map/gadm41_KHM_shp/gadm41_KHM_1.shp'
+JAPAN_MAP_PATH = './data/map/gadm41_JPN_shp/gadm41_JPN_1.shp'
+
+USE_MAP = CAMBODIA_MAP_PATH
 
 SAVE_IMAGE_PATH = f'./data/images'
 SAVE_GSMAP_IMAGE_PATH = f'./data/gsmap/images'

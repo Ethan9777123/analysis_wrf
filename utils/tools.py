@@ -15,7 +15,6 @@ import numpy as np
 
 def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
 
-    
     for filename in os.listdir(WRFOUT_FOLDERPATH):
         for char in old_str:
             if char in filename:
@@ -25,6 +24,8 @@ def refine_filename(WRFOUT_FOLDERPATH, old_str=['%3A', ''], new_str='_'):
                 os.rename(old_path, new_path)
 
 def get_filepath(folderpath):
+
+    print(folderpath)
     
     refine_filename(folderpath)
 
@@ -91,6 +92,14 @@ def choice_folders(folderlist):
     ).ask()
 
     
+
+    return selected
+
+def make_choices(list, title=''):
+
+    selected = questionary.checkbox(
+        title, choices=list
+    ).ask()
 
     return selected
 

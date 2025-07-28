@@ -9,6 +9,7 @@ from utils.get_observation import get_observation
 import numpy as np
 from datetime import datetime
 import geopandas as gpd
+from utils.evaluateNum import evaluateNum
 
 
 # plot setting
@@ -16,10 +17,10 @@ cmap = config.cmap
 norm = config.norm
 fontsize = 15
 
-gdf = gpd.read_file("./data/map/gadm41_KHM_shp/gadm41_KHM_1.shp")
+gdf = gpd.read_file(config.USE_MAP)
 
 
-def auto_subplot(graph_num, cols, time, lons_list, lats_list, rains_list, title_list, gsmap=True):
+def auto_subplot(graph_num, cols, time, lons_list, lats_list, rains_list, title_list, gsmap=True, nest_num=0):
 
     time_str = str(time)
     dt = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
@@ -48,6 +49,8 @@ def auto_subplot(graph_num, cols, time, lons_list, lats_list, rains_list, title_
     else:
         axes = [axes]
 
+    
+
 
     for i in range(graph_num):
 
@@ -75,7 +78,7 @@ def auto_subplot(graph_num, cols, time, lons_list, lats_list, rains_list, title_
         axes[i].set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
         axes[i].set_title(f'WRF-{title_list[i]}\n{time}', fontsize=fontsize)
 
-        print(f'{i}, {time}, {rains_list[i].shape}')
+        # print(f'{i}, {time}, {rains_list[i].shape}')
 
     if gsmap:
         # ax3 GSMAP
@@ -101,8 +104,15 @@ def auto_subplot(graph_num, cols, time, lons_list, lats_list, rains_list, title_
         
         axes[i+1].add_feature(cfeature.COASTLINE)
         axes[i+1].add_feature(cfeature.BORDERS, linestyle=':')
+
+        axes[i+1].add_geometries(
+            gdf.geometry, crs=ccrs.PlateCarree(), edgecolor='black',
+            facecolor='none'
+        )
         axes[i+1].set_extent([lon_min, lon_max, lat_min, lat_max], crs=ccrs.PlateCarree())
         axes[i+1].set_title(f'GSMAP\n{time}', fontsize=fontsize)
+
+        evaluateNum(time, title_list, rains_list, gs_rain_on_wrf, nest_num)
 
         print(f'GSMAP {i+1}, {time}, {gs_rain_on_wrf.shape}')
 

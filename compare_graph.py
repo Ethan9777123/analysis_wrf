@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+
 # get folders
 folders = get_foldername('./data/wrfout')
 choices = choice_folders(folders)
@@ -80,7 +81,7 @@ for nest_num in nest_num_list:
         auto_subplot(
             graph_num=folders_num, cols=2, time=time, 
             lons_list=lon_list_one_time, lats_list=lat_list_one_time, 
-            rains_list=rain_list_one_time, title_list=title_list
+            rains_list=rain_list_one_time, title_list=title_list, gsmap=True, nest_num=nest_num
         )
 
         filename = f'd0{nest_num}_20{yy}-{mm}-{dd}-{hh}'
