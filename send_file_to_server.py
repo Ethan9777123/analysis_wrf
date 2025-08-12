@@ -72,6 +72,7 @@ def send_files_via_ssh(
 
 # 使用例
 if __name__ == "__main__":
+    print(get_foldername(path=['data/wrf_conf']))
     folderpath_list = choice_folders(get_foldername(path=['data/wrf_conf']))
     print(folderpath_list)
     foldername = os.path.basename(folderpath_list[0])
